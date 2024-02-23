@@ -1,0 +1,41 @@
+// Installieren Sie das Tweepy-Modul mit pip:
+// pip install tweepy
+
+// Importieren Sie die Tweepy-Bibliothek
+const tweepy = require('tweepy');
+
+// Setzen Sie Ihre Twitter-API-Schlüssel und Zugriffstoken ein
+const apiKey = 'Ihr_API-Schlüssel';
+const apiSecretKey = 'Ihr_API-Geheimschlüssel';
+const accessToken = 'Ihr_Zugriffstoken';
+const accessTokenSecret = 'Ihr_Zugriffstoken-Geheim';
+
+// Authentifizieren Sie sich bei der Twitter-API
+const auth = new tweepy.OAuthHandler(apiKey, apiSecretKey);
+auth.setAccessToken(accessToken, accessTokenSecret);
+
+// Erstellen Sie ein API-Objekt für die Verbindung mit Twitter
+const api = new tweepy.API(auth);
+
+// Setzen Sie die Twitter-Benutzerhandlungen ein, von denen Sie Daten abrufen möchten
+const benutzerHandlungen = ['Benutzer1', 'Benutzer2'];
+
+// Funktion zum Abrufen von Tweets von angegebenen Benutzerhandlungen
+function tweetsAbrufen() {
+  for (let handlung of benutzerHandlungen) {
+    // Rufen Sie die Timeline-Tweets für den angegebenen Benutzer ab
+    api.user_timeline({ screen_name: handlung, count: 5 }, function(err, tweets) {
+      if (!err) {
+        console.log(`Tweets von @${handlung}:`);
+        for (let tweet of tweets) {
+          console.log(`- ${tweet.text}`);
+        }
+      } else {
+        console.error(`Fehler beim Abrufen der Tweets von @${handlung}: ${err}`);
+      }
+    });
+  }
+}
+
+// Beispielaufruf der Funktion
+tweetsAbrufen();
